@@ -7,19 +7,23 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
+    static boolean[] visited;
+    static ArrayList<Integer>[] adj;
+    static int n;
+    static int[] parent;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(br.readLine());
 
-        int[] parent = new int[n + 1];
+        parent = new int[n + 1];
 
-        ArrayList<Integer>[] adj = new ArrayList[n + 1];
+        adj = new ArrayList[n + 1];
 
         for (int i = 1; i <= n; i++) {
             adj[i] = new ArrayList<>();
         }
 
-        boolean[] visited = new boolean[n + 1];
+        visited = new boolean[n + 1];
         StringTokenizer st;
 
         for (int i = 1; i < n; i++) {
@@ -30,24 +34,20 @@ public class Main {
             adj[b].add(a);
         }
 
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(1);
-        visited[1] = true;
+        dfs(1);
 
-        while (!queue.isEmpty()) {
-            int cur = queue.poll();
-            for (int next : adj[cur]) {
-                if (visited[next]) {
-                    continue;
-                }
-                visited[next] = true;
-                queue.add(next);
-                parent[next] = cur;
-            }
-        }
-        
         for (int i = 2; i <= n; i++) {
             System.out.println(parent[i]);
+        }
+    }
+
+    public static void dfs(int index) {
+        visited[index] = true;
+        for (int next : adj[index]) {
+            if (!visited[next]) {
+                parent[next] = index;
+                dfs(next);
+            }
         }
     }
 }
