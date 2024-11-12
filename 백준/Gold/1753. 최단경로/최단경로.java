@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -14,7 +13,7 @@ public class Main {
 
         int start = Integer.parseInt(br.readLine());
 
-        ArrayList<Node>[] graph = new ArrayList[V+1];
+        ArrayList<Node>[] graph = new ArrayList[V + 1];
 
         for (int i = 0; i <= V; i++) {
             graph[i] = new ArrayList<>();
@@ -24,18 +23,17 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
-            int weight = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
 
-            graph[u].add(new Node(v, weight));
+            graph[u].add(new Node(v, w));
         }
 
         int[] dist = new int[V + 1];
         boolean[] visited = new boolean[V + 1];
         int INF = Integer.MAX_VALUE;
+        Arrays.fill(dist, INF);
 
-        Arrays.fill(dist, INF); // 거리를 무한으로 초기 설정
-
-        dist[start] = 0;  // 첫 정점을 0으로 설정 (자기 자신과의 거리는 0)
+        dist[start] = 0;
 
         PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<Node>(){
             @Override
@@ -46,36 +44,33 @@ public class Main {
 
         pq.offer(new Node(start, 0));
 
-        while (!pq.isEmpty()) {
+        while(!pq.isEmpty()) {
             Node cur = pq.poll();
-            visited[cur.v] = true; // 정점 방문
+            visited[cur.v] = true;
 
             for (Node next : graph[cur.v]) {
                 if (!visited[next.v] && dist[next.v] > dist[cur.v] + next.weight) {
-                    dist[next.v] = dist[cur.v] + next.weight;  // 작은 값으로 값 갱신
+                    dist[next.v] = dist[cur.v] + next.weight;
                     pq.offer(new Node(next.v, dist[next.v]));
                 }
             }
         }
-
         for (int i = 1; i <= V; i++) {
             if (dist[i] == INF) {
                 System.out.println("INF");
-            }
-            else {
+            }else{
                 System.out.println(dist[i]);
             }
         }
-
-
     }
+
     public static class Node{
         int v;
         int weight;
 
-        public Node(int v, int cost) {
+        public Node(int v, int weight) {
             this.v = v;
-            this.weight = cost;
+            this.weight = weight;
         }
     }
 }
