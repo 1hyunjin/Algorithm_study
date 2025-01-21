@@ -2,53 +2,33 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer str;
+        StringTokenizer st;
+
         int N = Integer.parseInt(br.readLine());
 
-        int[] arr = new int[N];
+        st = new StringTokenizer(br.readLine());
 
-        str = new StringTokenizer(br.readLine());
+        HashMap<Integer, Integer> map = new HashMap<>();
 
         for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(str.nextToken());
+            map.put(Integer.parseInt(st.nextToken()), 0);
         }
 
-        //정렬
-        Arrays.sort(arr);
+        int M = Integer.parseInt(br.readLine());
 
-        int K = Integer.parseInt(br.readLine());
-
-        int[] sang = new int[K];
-
-        str = new StringTokenizer(br.readLine());
-
-        for (int i = 0; i < K; i++) {
-            sang[i] = Integer.parseInt(str.nextToken());
-        }
-
+        st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < K; i++) {
-            int st = 0;
-            int en = N-1;
-            boolean isExit = false;
-            while (st <= en) {
-                int mid = (st + en) / 2;
-                if (arr[mid] < sang[i]) {
-                    st = mid + 1;
-                } else if (arr[mid] > sang[i]) {
-                    en = mid - 1;
-                }
-                else {
-                    sb.append("1").append(" ");
-                    isExit = true;
-                    break;
-                }
+        for (int i = 0; i < M; i++) {
+            int num = Integer.parseInt(st.nextToken());
+            if (map.containsKey(num)) {
+                sb.append(1).append(" ");
             }
-            if (!isExit) {
-                sb.append("0").append(" ");
+            else {
+                sb.append(0).append(" ");
             }
         }
         System.out.println(sb);
