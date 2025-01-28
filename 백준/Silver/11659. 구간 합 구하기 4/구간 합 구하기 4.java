@@ -1,34 +1,31 @@
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class Main {
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        Scanner sc = new Scanner(System.in);
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+
+        int[] arr = new int[N+1];
+
+        st = new StringTokenizer(br.readLine());
+
+        for (int i = 1; i <= N; i++) {
+            arr[i] = arr[i-1] + Integer.parseInt(st.nextToken());
+        }
 
         StringBuilder sb = new StringBuilder();
 
-        int N = sc.nextInt();
-        int M = sc.nextInt();
-
-        int sum = 0;
-        int[] arr = new int[N+1];
-
-        for (int i = 1; i <= N; i++) {
-            int n = sc.nextInt();
-            sum+= n;
-
-            arr[i] = sum;
-        }
-
         for (int i = 0; i < M; i++) {
-            int start = sc.nextInt();
-            int end = sc.nextInt();
-
-            sb.append(arr[end] - arr[start - 1]).append('\n');
+            st = new StringTokenizer(br.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            sb.append(arr[end] - arr[start - 1]).append("\n");
         }
-        String result = sb.toString();
-        System.out.println(result);
-
+        System.out.println(sb);
     }
 }
