@@ -7,11 +7,11 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         int N = Integer.parseInt(br.readLine());
-        int cnt = 1;
         int[][] arr = new int[N][N];
         int[][] dp = new int[N][N];
         int max = 0;
-
+        int cnt = 1;
+        
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < cnt; j++) {
@@ -30,6 +30,5 @@ public class Main {
             cnt++;
         }
         System.out.println(max);
-
     }
 }
