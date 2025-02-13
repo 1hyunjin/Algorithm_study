@@ -5,7 +5,7 @@ public class Main {
     static int L, C;
     static char[] alpha;
     static char[] result;
-
+    static StringBuilder sb;
     public static void main(String[] args) throws IOException{
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,10 +21,12 @@ public class Main {
         for(int i = 0; i < C; i++) {
             alpha[i] = st.nextToken().charAt(0);
         }
+        sb = new StringBuilder();
 
         Arrays.sort(alpha);
 
         comb(0,0);	//조합 : 6개 중 4개 뽑는 경우
+        System.out.println(sb);
     }
 
     public static void comb(int idx, int cnt) {
@@ -42,9 +44,9 @@ public class Main {
             }
             if(moem >= 1 && jaem >= 2) {
                 for (int j = 0; j < result.length; j++) {
-                    System.out.print(result[j]);
+                    sb.append(result[j]);
                 }
-                System.out.println();
+                sb.append("\n");
             }
 
             return;
