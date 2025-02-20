@@ -5,7 +5,6 @@ class Solution {
     public int solution(int k, int[] tangerine) {
         int answer = 0;
         int len = tangerine.length;
-        Arrays.sort(tangerine);
         
         Point[] point = new Point[10000001];
         
@@ -23,7 +22,6 @@ class Solution {
         
         Arrays.sort(point);
         
-        int type = 0;
         int total = 0; 
         
         for(int i = 0; i < point.length; i++){
