@@ -1,49 +1,38 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
+    static int n, m;
+    static int[] nums;
+    static StringBuilder sb;
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-	static int N, M;
-	static int[] arr;
-	static int[] result;
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-	static boolean[] isSelected;
+        nums = new int[m];
+        sb = new StringBuilder();
 
-	public static void main(String[] args) throws IOException {
+        perm(0);
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+        System.out.println(sb.toString());
+    }
 
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
+    public static void perm(int cnt) {
 
-		arr = new int[N];
-		result = new int[M];
-		
-		for (int i = 0; i < N; i++) {
-			arr[i] = i + 1;
-		}
-		sb = new StringBuilder();
-		comb(0);
-		System.out.println(sb.toString());
-	}
-	static StringBuilder sb;
-	
-	public static void comb(int cnt) {
-		if(cnt == M) {
-			for(int i =0; i < M; i++) {
-				sb.append(result[i] + " ");
-			}
-			sb.append('\n');
-			return;
-		}
-		
-		for(int i = 0; i < N; i++) {
-			result[cnt] = i+1;
-			comb(cnt+1);
-		}
-	}
+        if (cnt == m) {
+            for (int i = 0; i < m; i++) {
+                sb.append(nums[i]).append(" ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for (int i = 1; i <= n; i++) {
+            nums[cnt] = i;
+            perm(cnt+1);
+        }
+    }
 }
