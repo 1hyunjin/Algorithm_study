@@ -1,45 +1,48 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
+
 public class Main {
-    static int N, M;
-    static int[] arr;
+    static int n, m;
+    static int[] nums;
     static int[] result;
-    static boolean[] isSelected;
+    static boolean[] isUsed;
     static StringBuilder sb;
-    static int num;
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        arr = new int[N];
-        result = new int[M];
-        isSelected = new boolean[N];
+        nums = new int[n];
+        result = new int[m];
+        isUsed = new boolean[n];
+        sb = new StringBuilder();
 
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+
+        for (int i = 0; i < n; i++) {
+            nums[i] = Integer.parseInt(st.nextToken());
         }
-        Arrays.sort(arr);
-        sb = new StringBuilder();
-        num = 0;
-        comb(0);
+        Arrays.sort(nums);
+
+        perm2(0);
         System.out.println(sb.toString());
     }
 
-    public static void comb(int idx) {
-        if (idx == M) {
-            for (int i = 0; i < M; i++) {
+    public static void perm2(int cnt) {
+
+        if (cnt == m) {
+            for (int i = 0; i < m; i++) {
                 sb.append(result[i] + " ");
             }
             sb.append("\n");
             return;
         }
-        for (int i = num; i < N; i++) {
-            result[idx] = arr[i];
-            comb(idx + 1);
+
+        for (int i = 0; i < n; i++) {
+            result[cnt] = nums[i];
+            perm2(cnt+1);
         }
     }
 }
