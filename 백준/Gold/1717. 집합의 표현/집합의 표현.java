@@ -1,46 +1,43 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    static int n, m;
+    static int n,m;
     static int[] arr;
-
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
         arr = new int[n+1];
 
-        for(int i = 0; i <= n; i ++){
-            makeSet(i);
+        // 전처리
+        for (int i = 0; i <= n; i++) {
+            arr[i] = i;
         }
         StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
-            int num = Integer.parseInt(st.nextToken());
+            int order = Integer.parseInt(st.nextToken());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
 
-            if (num == 0) {
+            // a와 b를 합친다!
+            if (order == 0) {
                 union(a, b);
             }
             else {
-                if (find(a) != find(b)) {
-                    sb.append("NO").append("\n");
-                }
-                else {
+                if (find(a) == find(b)) {
                     sb.append("YES").append("\n");
-                }
+                } else sb.append("NO").append("\n");
             }
         }
-        System.out.println(sb);
+        System.out.println(sb.toString());
     }
-    public static void makeSet(int x){
-        arr[x] = x; // 자기 자신을 부모(root)로 전처리
-    }
-
+    // union : x와 y를 포함하는 두 집합을 통합하는 연산
     public static void union(int a, int b) {
         if (find(a) == find(b)) {
             return;
@@ -54,8 +51,6 @@ public class Main {
         if (arr[x] == x) {
             return x;
         }
-        else {
-            return arr[x] = find(arr[x]);
-        }
+        return arr[x] = find(arr[x]); // 경로 압축
     }
 }
