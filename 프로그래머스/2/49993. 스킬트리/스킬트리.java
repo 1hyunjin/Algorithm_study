@@ -1,45 +1,37 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 class Solution {
     public int solution(String skill, String[] skill_trees) {
         int answer = 0;
-        
-        for(String s : skill_trees){
-            answer += checkSkill(skill, s);
+        int n = skill.length();
+        char[] arr = new char[n];
+        for(int s = 0; s < n; s++){
+            arr[s] = skill.charAt(s);
         }
-        return answer;
-    }
-    
-    public int checkSkill(String skill, String s){
-        System.out.println(skill + " , " + s);
+        int T = skill_trees.length;
         
-        boolean isFind = false;
-        int start = -1;
-        boolean notLearn = false;
-        
-        for(int i = 0; i < skill.length(); i++){
-            // System.out.println(i);
-            for(int j = 0; j < s.length(); j++){
-                if(skill.charAt(i) == s.charAt(j)){
-                    if(!notLearn && start < j){
-                        start = j;
-                        isFind = true;
+        loop:for(int t = 0; t < T; t++){
+            String str = skill_trees[t];
+            int size = str.length();
+            int cur = 0; 
+            
+            for(int i = 0; i < size; i++){
+                char sk = str.charAt(i);
+                for(int j = 0; j < n; j++){
+                    if(sk == arr[j]){
+                        if(cur == j){
+                            cur++;
+                        }
+                        else if(cur < j){
+                            continue loop;
+                        }
                         break;
                     }
-                    else {
-                        System.out.println("0");
-                        return 0;
-                    }
-                }
-                else {
-                    isFind = false;
                 }
             }
-            if(!isFind){
-                notLearn = true;
-            }
-        }
-        return 1;
+            answer++;
+        }    
+        return answer;
     }
 }
