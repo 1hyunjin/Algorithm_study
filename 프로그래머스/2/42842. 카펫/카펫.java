@@ -5,7 +5,7 @@ class Solution {
     public int[] solution(int brown, int yellow) {
         int[] answer = new int[2];
         
-        for(int c = 3; c <= 2500; c++){
+        for(int c = 3; c < 5000; c++){
             for(int r = 3; r <= c; r++){
                 int edge = 2*c + 2*r - 4; 
                 
