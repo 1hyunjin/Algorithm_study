@@ -1,16 +1,18 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
     static int[][] arr;
+    static boolean[][] isCheck;
+    static HashMap<Integer, Point> map;
     static int bingo;
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
-
         arr = new int[5][5];
-        Map<Integer, Point> map = new HashMap<>();
+        isCheck = new boolean[5][5];
+
+        map = new HashMap<>();
 
         for (int i = 0; i < 5; i++) {
             st = new StringTokenizer(br.readLine());
@@ -19,101 +21,96 @@ public class Main {
                 map.put(arr[i][j], new Point(i, j));
             }
         }
-
-        List<Integer> list = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
+        bingo = 0;
+        int cnt = 1;
+        out:for (int i = 0; i < 5; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < 5; j++) {
                 int num = Integer.parseInt(st.nextToken());
-                list.add(num);
+                Point cur = map.get(num);
+                isCheck[cur.x][cur.y] = true;
+                if (cnt >= 5) {
+                    bingo = 0;
+                    // 열 확인
+                    checkRow();
+                    // 행 확인
+                    checkCol();
+                    // 대각선 확인
+                    checkDae1();
+                    checkDae2();
+
+                    if (bingo >= 3) {
+                        System.out.println(cnt);
+                        break out;
+                    }
+                }
+                cnt++;
             }
         }
-
-        // 사회자 부르는 수 차례대로 체킹해야 하는데? 빙고 개수도 확인해야한다.
-
-        for (int i = 0; i < list.size(); i++) {
-
-            int num = list.get(i);
-            Point cur = map.get(num);
-            arr[cur.x][cur.y] = -1;
-
-            bingo = 0;
-
-            // 가로
-            garo();
-            // 세로
-            sero();
-            // 대각선 1
-            dae1();
-            // 대각선 2
-            dae2();
-
-            if (bingo >= 3) {
-                System.out.println(i+1);
+    }
+    public static void checkRow() {
+        for (int i = 0; i < 5; i++) {
+            boolean isBingo = true;
+            for (int j = 0; j < 5; j++) {
+                if(!isCheck[i][j]){
+                    isBingo = false;
+                    break;
+                }
+            }
+            if (isBingo) {
+                bingo++;
+            }
+        }
+    }
+    public static void checkCol() {
+        for (int i = 0; i < 5; i++) {
+            boolean isBingo = true;
+            for (int j = 0; j < 5; j++) {
+                if (!isCheck[j][i]) {
+                    isBingo = false;
+                    break;
+                }
+            }
+            if (isBingo) {
+                bingo++;
+            }
+        }
+    }
+    public static void checkDae1() {
+        boolean isBingo = true;
+        for (int i = 0; i < 5; i++) {
+            if (!isCheck[i][i]) {
+                isBingo = false;
                 break;
             }
         }
+        if (isBingo) {
+            bingo++;
+        }
     }
-
-    public static void garo() {
+    public static void checkDae2() {
+        boolean isBingo = true;
         for (int i = 0; i < 5; i++) {
-            int cnt = 0;
-            for (int j = 0; j < 5; j++) {
-                if (arr[i][j] == -1) {
-                    cnt++;
-                }
-            }
-            if (cnt == 5) {
-                bingo++;
+            if (!isCheck[i][4 - i]) {
+                isBingo = false;
+                break;
             }
         }
-    }
-
-    public static void sero() {
-        for (int j = 0; j < 5; j++) {
-            int cnt = 0;
-            for (int i = 0; i < 5; i++) {
-                if (arr[i][j] == -1) {
-                    cnt++;
-                }
-            }
-            if (cnt == 5) {
-                bingo++;
-            }
+        if (isBingo) {
+            bingo++;
         }
     }
-
-    public static void dae1() {
-        int cnt = 0;
-        for (int i = 0; i < 5; i++) {
-            if (arr[i][i] == -1) {
-                cnt++;
-            }
-            if (cnt == 5) {
-                bingo++;
-            }
-        }
-    }
-
-    public static void dae2() {
-        int cnt = 0;
-        for (int i = 0; i < 5; i++) {
-            if (arr[i][4 - i] == -1) {
-                cnt++;
-            }
-            if (cnt == 5) {
-                bingo++;
-            }
-        }
-    }
-
-    public static class Point {
-        int x, y;
+    public static class Point{
+        int x;
+        int y;
 
         public Point(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+        @Override
+        public String toString() {
+            return "Point { " + this.x + " , " + this.y + " }";
         }
     }
 }
