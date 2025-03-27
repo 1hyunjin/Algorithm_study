@@ -2,8 +2,6 @@ import java.io.*;
 import java.util.*;
 
 class Solution {
-    static boolean[] visited;
-    static int[] dn = {1,2};
     public long solution(int n) {
         long answer = 0;
         
