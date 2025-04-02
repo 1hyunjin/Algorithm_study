@@ -1,42 +1,40 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int N , S;
+    static int N, S;
     static int[] arr;
+    static boolean[] isSelected;
     static int cnt;
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-
-        st = new StringTokenizer(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         S = Integer.parseInt(st.nextToken());
 
         arr = new int[N];
+        isSelected = new boolean[N];
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
         cnt = 0;
-        func(0,0);
         if (S == 0) {
-            cnt--;
+            cnt = -1;
         }
+        backTracking(0, 0);
         System.out.println(cnt);
     }
 
-    public static void func(int cur, int tot) {
-        if (cur == N) {
-            if (tot == S) {
+    public static void backTracking(int idx, int result) {
+        if (idx == N) {
+            if (result == S) {
                 cnt++;
             }
             return;
         }
-        func(cur+1, tot);   // 안더했을 때
-        func(cur + 1, tot + arr[cur]);      // 더했을 때
+        backTracking(idx + 1, result + arr[idx]);
+        backTracking(idx+1, result);
     }
 }
