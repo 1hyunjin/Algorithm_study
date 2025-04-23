@@ -10,37 +10,20 @@ public class Main {
         int A = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
 
-        Queue<Integer> queue = new ArrayDeque<>();
-        boolean[] visited = new boolean[1000001];
-        queue.add(A);
-        visited[A] = true;
-        int turn = 0;
+        int[] dp = new int[K+1];
+
+        Arrays.fill(dp, Integer.MAX_VALUE);
+
+        dp[A] = 0;
 
 
-        out:while (!queue.isEmpty()) {
-            int size = queue.size();
+        for (int i = A + 1; i <= K; i++) {
+            dp[i] = Math.min(dp[i], dp[i - 1] + 1);
 
-            for (int s = 0; s < size; s++) {
-                Integer cur = queue.poll();
-                if (cur == K) {
-                    System.out.println(turn);
-                    break out;
-                }
-
-                int next1 = cur+1;
-                int next2 = cur*2;
-
-                if (next1 <= K && !visited[next1]) {
-                    queue.add(next1);
-                    visited[next1] = true;
-                }
-                if (next2 <= K && !visited[next2]) {
-                    queue.add(next2);
-                    visited[next2] = true;
-                }
-//                System.out.println(queue);
+            if (i % 2 == 0 && i / 2 >= A) {
+                dp[i] = Math.min(dp[i], dp[i / 2] + 1);
             }
-            turn++;
         }
+        System.out.println(dp[K]);
     }
 }
