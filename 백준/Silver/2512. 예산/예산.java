@@ -1,54 +1,61 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int N, M;
+    static int M, N, total;
     static int[] arr;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(br.readLine());
-
+        N = Integer.parseInt(st.nextToken());
         arr = new int[N];
-        int sum = 0;
-
+        total = 0;
+        int max = 0;
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
+        for(int i =0; i < N; i++){
             arr[i] = Integer.parseInt(st.nextToken());
-            sum += arr[i];
+            total += arr[i];
+            max = Math.max(max, arr[i]);
         }
 
         M = Integer.parseInt(br.readLine());
-
-        Arrays.sort(arr);
-
-        if (sum <= M) {
-            System.out.println(arr[N - 1]);
+        if (total <= M) {
+            System.out.println(max);
+            return;
         }
-        else {
-            int start = 1;
-            int end = arr[N-1];
 
-            while (start < end-1) {
-                int mid = (start + end) / 2;
+        int start = 1;
+        int end = M;
 
-                if (solved(mid) > M) {
-                    end = mid;
-                } else {
-                    start = mid;
-                }
+        while (start < end) {
+            int mid = (start + end + 1 )/2;
+            if (isPossible(mid)) {
+                start = mid;
             }
-            System.out.println(start);
+            else {
+                end = mid -1;
+            }
         }
+        System.out.println(start);
     }
 
-    public static int solved(int mid) {
-        int total = 0;
+    public static boolean isPossible(int mid) {
+        int sum = 0;
         for (int i = 0; i < N; i++) {
-            total += Math.min(arr[i], mid);
+            if (arr[i] < mid) {
+                sum+=arr[i];
+            }
+            else {
+                sum+=mid;
+            }
         }
-        return total;
+//        System.out.println("sum : " + sum);
+        if (sum > M) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }
