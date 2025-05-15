@@ -9,7 +9,7 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
         Score[] score = new Score[N];
-        int[] prize = new int[N];
+        int[] prize = new int[N+1];
 
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -22,23 +22,25 @@ public class Main {
         }
         Arrays.sort(score);
         int[] cnt = new int[N + 1];
-        int p = 1;
+        int prev = 0;
         for (int i = 0; i < N; i++) {
             if (i == 0) {
-                prize[0] = 1;
-                cnt[prize[0]]++;
+                prize[score[i].num] = 1;
+                cnt[prize[score[i].num]]++;
+                prev = prize[score[i].num];
             } else {
                 if (score[i - 1].gold == score[i].gold && score[i - 1].silver == score[i].silver && score[i - 1].dong == score[i].dong) {
-                    prize[i] = prize[i - 1];
-                    cnt[prize[i]]++;
+                    prize[score[i].num] = prev;
+                    cnt[prize[score[i].num]]++;
                 } else {
-
-                    prize[i] = prize[i - 1] + cnt[prize[i - 1]];
-                    cnt[prize[i]]++;
+                    prize[score[i].num] = prev + cnt[prev];
+//                    prize[i] = prize[i - 1] + cnt[prize[i - 1]];
+                    cnt[prize[score[i].num]]++;
+                    prev = prize[score[i].num];
                 }
             }
         }
-        System.out.println(prize[K-1]);
+        System.out.println(prize[K]);
     }
 
     public static class Score implements Comparable<Score> {
@@ -62,6 +64,11 @@ public class Main {
                 } else return o.silver - this.silver;
             }
             return o.gold - this.gold;
+        }
+
+        @Override
+        public String toString() {
+            return "Score{ " + this.num + " , " + this.gold + " , " + this.silver + " , " + this.dong + " }";
         }
     }
 }
