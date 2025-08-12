@@ -12,7 +12,7 @@ public class Main {
         PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<Node>(){
             @Override
             public int compare(Node o1, Node o2) {
-                return o1.w - o2.w;
+                return Integer.compare(o1.w, o2.w);
             }
         });
         parent = new int[V+1];
@@ -27,11 +27,13 @@ public class Main {
             pq.offer(new Node(a, b, w));
         }
         int result = 0;
-        while (!pq.isEmpty()) {
+        int picked = 0;
+        while (!pq.isEmpty() && picked < V-1) {
             Node cur = pq.poll();
             if (find(cur.a) != find(cur.b)) {
                 union(cur.a, cur.b);
                 result+=cur.w;
+                picked++;
             }
         }
         System.out.println(result);
