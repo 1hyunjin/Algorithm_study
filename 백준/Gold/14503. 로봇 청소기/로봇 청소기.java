@@ -1,134 +1,74 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    static int n, m;
-    static int[][] map;
-    static boolean[][] cleaned;
-    static int r, c, dir;
+    static boolean[][] isClean;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
 
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-        map = new int[n][m];
-        cleaned = new boolean[n][m];
-        int roomCnt = 0;
+        int[][] map = new int[N][M];
+        isClean = new boolean[N][M];
         st = new StringTokenizer(br.readLine());
+        int rx = Integer.parseInt(st.nextToken());
+        int ry = Integer.parseInt(st.nextToken());
+        int dir = Integer.parseInt(st.nextToken());
 
-        r = Integer.parseInt(st.nextToken());
-        c = Integer.parseInt(st.nextToken());
-        dir = Integer.parseInt(st.nextToken());
-
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < m; j++) {
+            for (int j = 0; j < M; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
+        int roomCnt = 0;
 
+        // 현재 칸이 아직 청소되지 않은 경우, 현재 칸을 청소한다.
         while (true) {
-            // 1.현재 칸이 아직 청소되지 않은 경우, 현재 칸을 청소한다.
-            if (map[r][c] == 0 && !cleaned[r][c]) {
-                cleaned[r][c] = true; // 청소하면 2
+            if (map[rx][ry] == 0 && !isClean[rx][ry]) {
+                isClean[rx][ry] = true; // 청소하기
                 roomCnt++;
             }
-            // 2. 현재 칸의 주변 4칸 중 청소되지 않은 빈칸이 없는 경우
-            if (!notCleaned()) {
-                // 후진하는 칸이 빈칸이면 후진, 후진하는 칸이 벽이면 종료
-                if (!isGoBack()) {
+            boolean isLeft = false; // 청소할게 남아있는지 확인
+            for (int d = 0; d < 4; d++) {
+                int nx = rx + dx[d];
+                int ny = ry + dy[d];
+                if (nx >= 1 && nx < N-1 && ny >= 1 && ny < M-1 && map[nx][ny] == 0 && !isClean[nx][ny]) {
+                    isLeft = true; // 청소할 칸이 존재.
                     break;
                 }
             }
-            // 3. 현재 칸의 주변 4칸 중 청소되지 않은 빈칸이 있는 경우
-            else {
-                // 반시계방향으로 회전
-                rotate();
-                go();
+            // 현재 칸의 주변 4칸 중 청소되지 않은 빈 칸이 없는 경우
+            if (!isLeft) {
+                int backX = rx + dx[(dir + 2) % 4];
+                int backY = ry + dy[(dir + 2) % 4];
+                // 후진할 수 없음 -> 뒤쪽 칸이 벽인 경우 -> 작동 종료
+                if (map[backX][backY] == 1) {
+                    break;
+                }
+                // 바라보는 방향을 유지한 채로 한칸 후진 가능 -> 한 칸 후진 & 1번으로.
+                else {
+                    rx = backX;
+                    ry = backY;
+                }
             }
-
+            // 현재 칸의 주변 4칸 중 청소되지 않은 빈 칸이 존재하는 경우
+            else {
+                // 반시계 방향으로 회전
+                dir = (dir+3)%4;
+                int nx = rx + dx[dir];
+                int ny = ry + dy[dir];
+                if (nx >= 1 && nx < N-1 && ny >= 1 && ny < M-1 && map[nx][ny] == 0 && !isClean[nx][ny]) {
+                    rx = nx;
+                    ry = ny;
+                }
+            }
         }
         System.out.println(roomCnt);
-    }
-
-    public static void go() {
-        int nx = r;
-        int ny = c;
-
-        if (dir == 0) {
-            nx -= 1;
-        } else if (dir == 1) {
-            ny += 1;
-        } else if (dir == 2) {
-            nx += 1;
-        } else {
-            ny -= 1;
-        }
-        if (nx >= 1 && nx < n - 1 && ny >= 1 && ny < m - 1 && map[nx][ny] == 0 && !cleaned[nx][ny]) {
-            r = nx;
-            c = ny;
-        }
-    }
-
-    public static void rotate() {
-        if (dir == 0) {
-            dir = 3;
-        } else if (dir == 1) {
-            dir = 0;
-        } else if (dir == 2) {
-            dir = 1;
-        } else {
-            dir = 2;
-        }
-    }
-
-    public static boolean isGoBack() {
-        int nx = r;
-        int ny = c;
-
-        if (dir == 0) {
-            nx += 1;
-        } else if (dir == 1) {
-            ny -= 1;
-        } else if (dir == 2) {
-            nx -= 1;
-        } else {
-            ny += 1;
-        }
-        if (map[nx][ny] == 1) {
-            return false;
-        } else {
-            // 후진하셈
-            r = nx;
-            c = ny;
-            return true;
-        }
-    }
-
-    static int[] dx = {-1, 1, 0, 0};
-    static int[] dy = {0, 0, -1, 1};
-
-    public static boolean notCleaned() {
-        int cnt = 0;
-        for (int d = 0; d < 4; d++) {
-            int nx = r + dx[d];
-            int ny = c + dy[d];
-
-            if (nx >= 1 && nx < n - 1 && ny >= 1 && ny < m - 1 && map[nx][ny] == 0 && !cleaned[nx][ny]) {
-                cnt++;
-            }
-        }
-        // 4칸이 다 청소되어 있는 경우 -> false
-        if (cnt == 0) {
-            return false;
-        }
-        // 청소되지 않은 칸이 존재하면 -> true
-        else {
-            return true;
-        }
     }
 }
