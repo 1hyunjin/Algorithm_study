@@ -1,6 +1,6 @@
 -- 코드를 작성해주세요
-select count(*) as FISH_COUNT,n.FISH_NAME
-from FISH_INFO i
-join FISH_NAME_INFO n on i.FISH_TYPE = n.FISH_TYPE
-group by n.FISH_NAME
-order by FISH_COUNT desc;
+select count(i.fish_type) as fish_count, n.fish_name
+from fish_info i , fish_name_info n
+where i.fish_type = n.fish_type
+group by n.fish_name
+order by count(i.fish_type) desc;
