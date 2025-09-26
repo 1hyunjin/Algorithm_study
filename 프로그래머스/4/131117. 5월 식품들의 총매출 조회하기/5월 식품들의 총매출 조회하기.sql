@@ -1,7 +1,6 @@
 -- 코드를 입력하세요
-SELECT p.product_id, p.product_name, sum(o.amount)*p.price as 'TOTAL_SALES'
-from food_product p ,food_order o  
-where p.product_id = o.product_id
-and year(o.produce_date)  = '2022' and month(o.produce_date) = '05'
-group by p.product_id
-order by sum(o.amount)*p.price desc, p.product_id asc;
+SELECT p.PRODUCT_ID, p.PRODUCT_NAME, SUM(o.AMOUNT*p.PRICE) AS TOTAL_SALES
+FROM FOOD_PRODUCT p LEFT JOIN FOOD_ORDER o ON p.PRODUCT_ID = o.PRODUCT_ID
+WHERE YEAR(o.PRODUCE_DATE) = 2022 AND MONTH(o.PRODUCE_DATE) = 5
+GROUP BY p.PRODUCT_ID
+ORDER BY 3 DESC, p.PRODUCT_ID ASC;
