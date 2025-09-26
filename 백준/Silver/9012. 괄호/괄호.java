@@ -2,55 +2,50 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+    static long INF = 1000000007;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < T; i++) {
-            String str = br.readLine();
-            if (str.length() % 2 != 0) {
+        for (int t = 0; t < T; t++) {
+            String s = br.readLine();
+            if (s.charAt(0) == ')') {
                 sb.append("NO").append("\n");
                 continue;
             }
             int left = 0;
             int right = 0;
-            Stack<Character> stack = new Stack<>();
-            for (int j = str.length() - 1; j >= 0; j--) {
-                if (str.charAt(j) == '(') {
+            for (int i = 0; i < s.length(); i++) {
+                if (s.charAt(i) == '(') {
                     left++;
-                } else {
+                }else{
                     right++;
                 }
-                stack.push(str.charAt(j));
             }
             if (left != right) {
                 sb.append("NO").append("\n");
                 continue;
             }
-            left = 0;
-            right = 0;
-            boolean isMatch = true;
-            while (!stack.isEmpty()) {
-                char c = stack.pop();
-                if (c == '(') {
-                    if (stack.peek() == ')') {
-                        right++;
+            Stack<Character> stack = new Stack<>();
+            stack.push(s.charAt(0));
+            for (int i = 1; i < s.length(); i++) {
+                if (s.charAt(i) == ')') {
+                    if (!stack.isEmpty() && stack.peek() == '(') {
                         stack.pop();
                     }
-                    left++;
-                } else {
-                    right++;
-                    if (left < right) {
-                        isMatch = false;
-                        break;
+                    else{
+                        stack.push(s.charAt(i));
                     }
+                }else {
+                    stack.push(s.charAt(i));
                 }
             }
-            if (!isMatch) {
-                sb.append("NO").append("\n");
-            }
-            else {
+            if (stack.isEmpty()) {
                 sb.append("YES").append("\n");
+                continue;
+            }
+            else{
+                sb.append("NO").append("\n");
             }
         }
         System.out.println(sb.toString());
