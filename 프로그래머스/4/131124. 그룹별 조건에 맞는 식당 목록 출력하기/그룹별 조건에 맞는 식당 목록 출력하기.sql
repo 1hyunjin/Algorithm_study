@@ -1,17 +1,15 @@
 -- 코드를 입력하세요
-SELECT p.member_name, r.review_text, date_format(r.review_date, '%Y-%m-%d') as 'REVIEW_DATE'
-from member_profile p left join rest_review r on p.member_id = r.member_id
-where r.member_id in (
-    select member_id
-    from rest_review
-    group by member_id
-    having count(*) = (
-        select max(CNT)
-        from (
-            select member_id, count(*) as CNT
-            from rest_review
-            group by member_id
-        ) T
-    ) 
-)
-order by r.review_date asc, r.review_text asc;
+SELECT m.MEMBER_NAME, r.REVIEW_TEXT, DATE_FORMAT(r.REVIEW_DATE, '%Y-%m-%d') AS REVIEW_DATE
+FROM MEMBER_PROFILE m LEFT JOIN REST_REVIEW r ON m.MEMBER_ID = r.MEMBER_ID
+WHERE r.MEMBER_ID IN (
+                SELECT MEMBER_ID
+                FROM REST_REVIEW
+                GROUP BY MEMBER_ID
+                HAVING COUNT(*) = (
+                        SELECT COUNT(MEMBER_ID)
+                        FROM REST_REVIEW
+                        GROUP BY MEMBER_ID
+                        ORDER BY COUNT(MEMBER_ID) DESC LIMIT 1
+                    )
+            )
+ORDER BY 3 ASC, 2 ASC;
