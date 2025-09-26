@@ -1,13 +1,8 @@
 -- 코드를 입력하세요
-SELECT 
-    year(o.sales_date) as 'YEAR', 
-    month(o.sales_date) as 'MONTH', 
-    count(distinct(o.user_id)) as 'PURCHASED_USERS',
-    round(count(distinct(o.user_id))/(select count(user_id) from user_info where year(joined) = '2021'), 1) as 'PUCHASED_RATIO'
-
-
-from online_sale o , user_info i 
-where i.user_id = o.user_id
-and year(i.joined) = '2021'
-group by year(o.sales_date), month(o.sales_date)
-order by year(o.sales_date), month(o.sales_date);
+SELECT YEAR(s.SALES_DATE) AS YEAR, MONTH(s.SALES_DATE) AS MONTH
+    , COUNT(DISTINCT(s.USER_ID)) AS PURCHASED_USERS
+    , ROUND(COUNT(DISTINCT(s.USER_ID))/ (SELECT COUNT(USER_ID) FROM USER_INFO WHERE YEAR(JOINED) = 2021), 1) AS PUCHASED_RATIO
+FROM ONLINE_SALE s JOIN  USER_INFO i ON s.USER_ID = i.USER_ID
+WHERE YEAR(i.JOINED) = 2021
+GROUP BY YEAR(s.SALES_DATE), MONTH(s.SALES_DATE)
+ORDER BY 1, 2 ;
