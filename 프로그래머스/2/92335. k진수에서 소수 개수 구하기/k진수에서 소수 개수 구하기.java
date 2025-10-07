@@ -22,7 +22,7 @@ class Solution {
     }
     public static void find(String s){
         String[] sp = s.split("0");
-        // System.out.println(Arrays.toString(sp));
+        System.out.println(Arrays.toString(sp));
         for(String str : sp){
             if(!str.equals("")){
                 Long number = Long.parseLong(str);
@@ -40,10 +40,10 @@ class Solution {
         else if(number == 2){
             return true; 
         }
-        else if(number % 2 == 0){
-            return false;
-        }
-        for(int i = 3; i <= Math.sqrt(number); i+=2){
+        // else if(number % 2 == 0){
+        //     return false;
+        // }
+        for(int i = 3; i <= Math.sqrt(number); i++){
             if(number % i == 0){
                 return false;
             }
