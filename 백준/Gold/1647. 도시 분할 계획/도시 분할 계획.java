@@ -1,74 +1,69 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    static int N, M;
-    static List<Edge>[] list;
-    static boolean[] visited;
-    public static void main(String[] args) throws IOException {
+    static int V, E;
+    static int[] parent;
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-
-        list = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++) {
-            list[i] = new ArrayList();
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<Node>(){
+            @Override
+            public int compare(Node o1, Node o2) {
+                return o1.w - o2.w;
+            }
+        });
+        parent = new int[N+1];
+        for (int i = 0; i <= N; i++) {
+            parent[i] = i;
         }
-
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
-            int cost = Integer.parseInt(st.nextToken());
-
-            list[start].add(new Edge(end, cost));
-            list[end].add(new Edge(start, cost));
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
+            int C = Integer.parseInt(st.nextToken());
+            pq.offer(new Node(A, B, C));
         }
-        visited = new boolean[N + 1];
-        System.out.println(prim());
-    }
-    public static int prim() {
-        PriorityQueue<Edge> pq = new PriorityQueue<>();
-        pq.offer(new Edge(1, 0));
-        int dist = 0;
-        int max = 0;
-
+        int result  = 0;
+        int lastBridge = 0;
         while (!pq.isEmpty()) {
-            Edge cur = pq.poll();
-            if (!visited[cur.to]) {
-                visited[cur.to] = true;
-            } else {
-                continue;
-            }
-            max = Math.max(max, cur.cost);
-            dist += cur.cost;
-
-            for (int i = 0; i < list[cur.to].size(); i++) {
-                Edge  next = list[cur.to].get(i);
-                if (!visited[next.to]) {
-                    pq.offer(new Edge(next.to, next.cost));
-                }
+            Node cur = pq.poll();
+            if (find(cur.u) != find(cur.v)) {
+                union(cur.u, cur.v);
+                result+= cur.w;
+                lastBridge = cur.w;
             }
         }
-        return dist - max;
+        System.out.println(result - lastBridge);
     }
+    public static void union(int a, int b){
+        int rootA = find(a);
+        int rootB = find(b);
 
-    public static class Edge implements Comparable<Edge>{
-        int  to;
-        int cost;
-
-        public Edge(int to, int cost) {
-            this.to = to;
-            this.cost = cost;
+        if (rootA < rootB) {
+            parent[rootB] = rootA;
         }
+        else{
+            parent[rootA] = rootB;
+        }
+    }
+    public static int find(int x) {
+        if (x == parent[x]) {
+            return x;
+        }
+        return parent[x] = find(parent[x]); // 경로 압축
+    }
+    public static class Node{
+        int u;
+        int v;
+        int w;
 
-        @Override
-        public int compareTo(Edge o) {
-            return this.cost - o.cost;
+        public Node(int u, int v, int w) {
+            this.u = u;
+            this.v = v;
+            this.w = w;
         }
     }
 }
