@@ -13,7 +13,7 @@ public class Main {
         long sum = Long.MAX_VALUE;
         long x = 0;
         long y = 0;
-        for(int i = 1; i <= N; i++){
+        for(int i = 1; i <= Math.sqrt(N); i++){
             if (N % i == 0) {
                 int a = i;
                 int b= N/i;
