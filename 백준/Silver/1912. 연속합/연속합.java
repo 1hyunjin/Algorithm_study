@@ -2,29 +2,23 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        int n = Integer.parseInt(br.readLine());
-        int[] arr = new int[n];
-        st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < n; i++){
+        int N = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int[] arr = new int[N+1];
+        for (int i = 1; i <= N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
-
-        int[] dp = new int[n];
-        Arrays.fill(dp, 0);
-        dp[0] = arr[0];
-        int max = dp[0];
-
-        for (int i = 1; i < n; i++) {
-            if (arr[i] < dp[i - 1] + arr[i]) {
-                dp[i] = dp[i - 1] + arr[i];
-            }
-            else {
-                dp[i] = arr[i];
-            }
-            max = Math.max(max, dp[i]);
+        int[] dp = new int[N+1];
+        dp[0] = 0;
+        for (int i = 1; i <= N; i++) {
+            dp[i] = arr[i];
+            dp[i] = Math.max(dp[i], Math.max(dp[i] + arr[i-1], dp[i - 1] + arr[i]));
+        }
+        int max = Integer.MIN_VALUE;
+        for (int i = 1; i <= N; i++) {
+            max = Math.max(max,dp[i]);
         }
         System.out.println(max);
     }
