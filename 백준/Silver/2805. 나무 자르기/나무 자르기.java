@@ -2,42 +2,47 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int[] arr;
-    static int N,M;
-    public static void main(String[] args) throws IOException {
+    static int N, M;
+    static int[] trees;
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        arr = new int[N];
+        trees = new int[N];
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            trees[i] = Integer.parseInt(st.nextToken());
         }
-        Arrays.sort(arr);
-        long start = 0;
-        long end = arr[N-1];
-        long maxHeight = arr[N-1];
-        while (start <= end) {
-            long mid = (start+end+1)/2;
-            if (isGet(mid)) {
-                start = mid+1;
-                maxHeight = mid;
+        Arrays.sort(trees);
+        long s = 0;
+        long e = trees[N-1];
+        long max = trees[N-1];
+        while (s <= e) {
+            long mid = (s+e+1)/2;
+            if (cut(mid)) {
+                s = mid+1;
+                max = mid;
             }
             else{
-                end = mid -1;
+                e = mid-1;
             }
         }
-        System.out.println(maxHeight);
+        System.out.println(max);
     }
 
-    public static boolean isGet(long mid) {
+    public static boolean cut(long mid) {
         long sum = 0;
         for (int i = 0; i < N; i++) {
-            if (arr[i] >= mid) {
-                sum+= arr[i] - mid;
+            if (trees[i] >= mid) {
+                sum += trees[i] - mid;
             }
         }
-        return sum >= M;
+        if (sum >= M) {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
