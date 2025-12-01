@@ -22,28 +22,22 @@ public class Main {
                 sb.append("-1").append("\n");
                 continue;
             }
-            long s = 0;
-            long e = N-1;
-            while (s <= e) {
-                long mid = (s+e)/2;
-                if (arr[(int) mid] < D) {
-                    s = mid+1;
-                } else if (arr[(int) mid] > D) {
+            int s = 0;
+            int e = N-1;
+            int answer = -1;
+            while(s <= e){
+                int mid = (s+e)/2;
+                if(arr[mid] == D){
+                    answer = mid;
                     e = mid-1;
-                } else if (arr[(int) mid] == D) {
-                    if(mid == 0){
-                        sb.append(mid).append("\n");
-                        break;
-                    }
-                    else if (mid-1 >= 0 && arr[(int) mid - 1] != D) {
-                        sb.append(mid).append("\n");
-                        break;
-                    }
-                    else{
-                        e = mid-1;
-                    }
+                } else if (arr[mid] > D) {
+                    e = mid-1;
                 }
-            };
+                else{
+                    s = mid+1;
+                }
+            }
+            sb.append(answer).append("\n");
         }
         System.out.println(sb.toString());
     }
