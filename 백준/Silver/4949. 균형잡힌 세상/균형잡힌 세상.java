@@ -11,47 +11,49 @@ class Main {
                 break;
             }
             Stack<Character> stack = new Stack<>();
-            boolean isBalance = true;
+            boolean isVPS = true;
             for (int i = 0; i < s.length(); i++) {
                 char c = s.charAt(i);
-                if (c == '(') {
-                    stack.push(c);
+                if(c == '('){
+                    stack.push('(');
                 }
                 else if (c == ')') {
-                    if(!stack.isEmpty()){
+                    if (!stack.isEmpty()) {
                         if (stack.peek() == '(') {
                             stack.pop();
                         }
                         else {
-                            stack.push(c);
+                            stack.push(')');
                         }
                     }
                     else{
-                        isBalance = false;
+                        isVPS = false;
                         break;
                     }
-                } else if (c == '[') {
-                    stack.push(c);
-                } else if (c == ']') {
+                }
+                else if (c == '[') {
+                    stack.push('[');
+                }
+                else if (c == ']') {
                     if (!stack.isEmpty()) {
                         if (stack.peek() == '[') {
                             stack.pop();
                         }
                         else{
-                            stack.push(c);
+                            stack.push(']');
                         }
                     }
                     else{
-                        isBalance = false;
+                        isVPS = false;
                         break;
                     }
                 }
             }
-            if (!isBalance || (isBalance && !stack.isEmpty())) {
-                sb.append("no").append("\n");
+            if (isVPS && stack.isEmpty()) {
+                sb.append("yes").append('\n');
             }
-            else {
-                sb.append("yes").append("\n");
+            else{
+                sb.append("no").append('\n');
             }
         }
         System.out.println(sb.toString());
