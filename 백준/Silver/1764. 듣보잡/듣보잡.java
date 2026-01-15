@@ -1,34 +1,31 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-public class Main {
-    public static void main(String[] args) throws IOException{
+class Main {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-
-        HashMap<String, Integer> s = new HashMap<>();
-
+        Set<String> set = new HashSet<>();
         for (int i = 0; i < N; i++) {
-            String name = br.readLine();
-            s.put(name, 0);
+            set.add(br.readLine());
         }
-        StringBuilder sb = new StringBuilder();
+        int cnt = 0;
         List<String> list = new ArrayList<>();
-
         for (int i = 0; i < M; i++) {
             String name = br.readLine();
-            if (s.containsKey(name)) {
+            if (set.contains(name)) {
+                cnt++;
                 list.add(name);
             }
         }
+        StringBuilder sb = new StringBuilder();
+        sb.append(cnt).append('\n');
         Collections.sort(list);
-
-        System.out.println(list.size());
-        for (String name : list) {
-            System.out.println(name);
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i)).append('\n');
         }
+        System.out.println(sb.toString());
     }
 }
