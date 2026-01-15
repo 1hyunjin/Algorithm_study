@@ -1,67 +1,62 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
+class Main {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        Map<Integer, Integer> map = new HashMap<>();
-        TreeSet<Problem> treeSet = new TreeSet<>();
-
         StringTokenizer st;
+        Map<Integer, Integer> map = new HashMap<>();
+        TreeSet<Question> set = new TreeSet<>();
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             int num = Integer.parseInt(st.nextToken());
             int level = Integer.parseInt(st.nextToken());
             map.put(num, level);
-            treeSet.add(new Problem(num, level));
+            set.add(new Question(num, level));
         }
-        StringBuilder sb = new StringBuilder();
         int M = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
             String op = st.nextToken();
-            if (op.equals("add")) {
-                int num = Integer.parseInt(st.nextToken());
-                int level = Integer.parseInt(st.nextToken());
-                map.put(num, level);
-                treeSet.add(new Problem(num, level));
-            } else if (op.equals("recommend")) {
+            if (op.equals("recommend")) {
                 int x = Integer.parseInt(st.nextToken());
                 if (x == 1) {
-                    Problem hard = treeSet.last();
-                    sb.append(hard.num).append("\n");
+                    sb.append(set.first().num).append("\n");
                 }
                 else{
-                    Problem easy = treeSet.first();
-                    sb.append(easy.num).append("\n");
+                    sb.append(set.last().num).append("\n");
                 }
-            } else if (op.equals("solved")) {
-                int num = Integer.parseInt(st.nextToken());
-                Integer level = map.get(num);
-                Problem solved = new Problem(num, level);
-                treeSet.remove(solved);
-                map.remove(num);
+            } else if (op.equals("add")) {
+                int n = Integer.parseInt(st.nextToken());
+                int l = Integer.parseInt(st.nextToken());
+                map.put(n, l);
+                set.add(new Question(n, l));
+            } else{
+                int n = Integer.parseInt(st.nextToken());
+                int l = map.get(n);
+                map.remove(n);
+                set.remove(new Question(n, l));
             }
         }
         System.out.println(sb.toString());
-
     }
-    public static class Problem implements Comparable<Problem>{
+    public static class Question implements Comparable<Question>{
         int num;
         int level;
 
-        public Problem(int num, int level) {
+        public Question(int num, int level) {
             this.num = num;
             this.level = level;
         }
 
         @Override
-        public int compareTo(Problem o) {
-            if (this.level == o.level) {
-                return this.num - o.num;
+        public int compareTo(Question o1) {
+            if (this.level == o1.level) {
+                return o1.num - this.num;
             }
-            return this.level - o.level;
+            return o1.level - this.level;
         }
     }
 }
