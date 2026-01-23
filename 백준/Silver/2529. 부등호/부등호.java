@@ -21,13 +21,13 @@ class Main {
         result = new int[k+1];
         isSelected = new boolean[10];
         list = new ArrayList<>();
-        back(0, 0);
+        back(0);
         Collections.sort(list);
         System.out.println(list.get(list.size()-1));
         System.out.println(list.get(0));
     }
 
-    public static void back(int idx, int cnt) {
+    public static void back(int cnt) {
         if(cnt == S){
             int a = result[0];
             StringBuilder sb = new StringBuilder();
@@ -66,7 +66,7 @@ class Main {
             if (!isSelected[i]) {
                 isSelected[i] = true;
                 result[cnt] = i;
-                back(idx+1, cnt+1);
+                back(cnt+1);
                 isSelected[i] = false;
             }
         }
