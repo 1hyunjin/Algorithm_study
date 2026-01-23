@@ -1,20 +1,15 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
-    static int N, S;
+class Main {
     static int[] arr;
-    static boolean[] isSelected;
-    static int cnt;
-    public static void main(String[] args) throws IOException{
+    static int N, S, cnt;
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         S = Integer.parseInt(st.nextToken());
-
         arr = new int[N];
-        isSelected = new boolean[N];
-
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
@@ -23,18 +18,18 @@ public class Main {
         if (S == 0) {
             cnt = -1;
         }
-        backTracking(0, 0);
+        back(0, 0);
         System.out.println(cnt);
     }
 
-    public static void backTracking(int idx, int result) {
+    public static void back(int idx, int result) {
         if (idx == N) {
             if (result == S) {
                 cnt++;
             }
             return;
         }
-        backTracking(idx + 1, result + arr[idx]);
-        backTracking(idx+1, result);
+        back(idx + 1, result + arr[idx]);
+        back(idx+1, result);
     }
 }
