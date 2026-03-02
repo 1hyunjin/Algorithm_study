@@ -1,49 +1,47 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-public class Main {
-    static int n, m;
-    static int[] nums;
-    static int[] result;
-    static boolean[] isUsed;
+class Main {
+    static int N, M;
+    static int[] arr;
+    static int[] parent;
+    static boolean[] isSelected;
     static StringBuilder sb;
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-
-        nums = new int[n];
-        result = new int[m];
-        isUsed = new boolean[n];
-        sb = new StringBuilder();
-
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        isSelected = new boolean[N + 1];
+        arr = new int[M];
+        parent = new int[N];
         st = new StringTokenizer(br.readLine());
-
-        for (int i = 0; i < n; i++) {
-            nums[i] = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < N; i++) {
+            parent[i] = Integer.parseInt(st.nextToken());
         }
-        Arrays.sort(nums);
+        Arrays.sort(parent);
+        sb = new StringBuilder();
         comb(0, 0);
         System.out.println(sb.toString());
     }
 
     public static void comb(int cnt, int idx) {
-
-        if (cnt == m) {
-            for (int i = 0; i < m; i++) {
-                sb.append(result[i] + " ");
+        if (cnt == M) {
+            for (int i = 0; i < N; i++) {
+                if (isSelected[i]) {
+                    sb.append(parent[i]).append(" ");
+                }
             }
-            sb.append("\n");
+            sb.append('\n');
             return;
         }
-        if (idx == n) {
+        if(idx == N){
             return;
         }
-        result[cnt] = nums[idx];
-        comb(cnt+1, idx+1);
-        comb(cnt, idx+1);
-
+        isSelected[idx] = true;
+        comb(cnt + 1, idx + 1);
+        isSelected[idx] = false;
+        comb(cnt, idx + 1);
     }
 }
