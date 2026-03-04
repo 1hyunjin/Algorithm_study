@@ -1,51 +1,44 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+class Main {
     static int N, M;
     static int[] arr;
-    static int[] result;
-    static boolean[] isSelected;
+    static int[] parent;
     static StringBuilder sb;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-
-        arr = new int[N];
-        result = new int[M];
-        isSelected = new boolean[N];
-
+        arr = new int[M];
+        parent = new int[N];
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            parent[i] = Integer.parseInt(st.nextToken());
         }
-        Arrays.sort(arr);
+        Arrays.sort(parent);
         sb = new StringBuilder();
         comb(0);
         System.out.println(sb.toString());
     }
 
-    public static void comb(int idx) {
-        if (idx == M) {
+    public static void comb(int cnt) {
+        if (cnt == M) {
             for (int i = 0; i < M; i++) {
-                sb.append(result[i] + " ");
+                sb.append(arr[i]).append(" ");
             }
-            sb.append("\n");
+            sb.append('\n');
             return;
         }
-        int before = 0;
+        int prev = 0;
         for (int i = 0; i < N; i++) {
-
-            if (before != arr[i]) {
-                before = arr[i];
-                result[idx] = arr[i];
-                comb(idx + 1);
+            if (prev != parent[i]) {
+                prev = parent[i];
+                arr[cnt] = parent[i];
+                comb(cnt + 1);
             }
-
         }
     }
 }
