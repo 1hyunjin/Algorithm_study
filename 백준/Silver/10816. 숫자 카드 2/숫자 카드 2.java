@@ -1,30 +1,56 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
+class Main {
+    static int N, M;
+    static int[] arr;
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
+        N = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
-        Map<Integer, Integer> map = new HashMap<>();
-
+        arr = new int[N];
         for (int i = 0; i < N; i++) {
-            int num = Integer.parseInt(st.nextToken());
-            map.put(num, map.getOrDefault(num, 0) + 1);
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-
-        int M = Integer.parseInt(br.readLine());
-        st = new StringTokenizer(br.readLine());
+        Arrays.sort(arr);
+        M = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
+        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < M; i++) {
-            int num = Integer.parseInt(st.nextToken());
-            if (map.containsKey(num)) {
-                sb.append(map.get(num)).append(" ");
-            }
-            else{
-                sb.append(0).append(" ");
+            int target = Integer.parseInt(st.nextToken());
+            int lIdx = lower(target);
+            int uIdx = upper(target);
+            sb.append(uIdx-lIdx).append(" ");
+        }
+        System.out.println(sb.toString());
+    }
+
+    public static int lower(int target) {
+        int start = 0;
+        int end = N;
+        while (start < end) {
+            int mid = (start + end) / 2;
+            if (arr[mid] >= target) {
+                end = mid;
+            } else {
+                start = mid + 1;
             }
         }
-        System.out.println(sb);
+        return start;
+    }
+
+    public static int upper(int target) {
+        int start = 0;
+        int end = N;
+        while (start < end) {
+            int mid = (start + end) / 2;
+            if (arr[mid] > target) {
+                end = mid;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return start;
     }
 }
