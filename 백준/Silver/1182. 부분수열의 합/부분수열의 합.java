@@ -2,8 +2,8 @@ import java.io.*;
 import java.util.*;
 
 class Main {
-    static int[] arr;
     static int N, S, cnt;
+    static int[] arr;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -15,21 +15,21 @@ class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
         cnt = 0;
+        comb(0, 0);
         if (S == 0) {
-            cnt = -1;
+            cnt--;
         }
-        back(0, 0);
         System.out.println(cnt);
     }
 
-    public static void back(int idx, int result) {
-        if (idx == N) {
+    public static void comb(int result, int idx) {
+        if (idx== N) {
             if (result == S) {
                 cnt++;
             }
             return;
         }
-        back(idx + 1, result + arr[idx]);
-        back(idx+1, result);
+        comb(result + arr[idx], idx + 1);
+        comb(result, idx+1);
     }
 }
