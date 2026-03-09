@@ -1,36 +1,50 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-public class Main {
-    public static void main(String[] args) throws IOException{
-
+class Main {
+    static StringBuilder sb;
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-
         int N = Integer.parseInt(br.readLine());
-
-        st = new StringTokenizer(br.readLine());
-
-        HashMap<Integer, Integer> map = new HashMap<>();
-
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int[] arr = new int[N];
         for (int i = 0; i < N; i++) {
-            map.put(Integer.parseInt(st.nextToken()), 0);
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-
         int M = Integer.parseInt(br.readLine());
-
+        int[] brr = new int[M];
         st = new StringTokenizer(br.readLine());
-        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < M; i++) {
+            brr[i] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.sort(arr);
+        sb = new StringBuilder();
 
         for (int i = 0; i < M; i++) {
-            int num = Integer.parseInt(st.nextToken());
-            if (map.containsKey(num)) {
-                sb.append(1).append("\n");
+            int target = brr[i];
+            int start = 0;
+            int end = N-1;
+            boolean isMatch = false;
+            while (start <= end) {
+                int mid = (start+end)/2;
+                if (arr[mid] == target) {
+                    isMatch = true;
+                    break;
+                }
+                if (target < arr[mid]) {
+                    end = mid-1;
+                }
+                if (target > arr[mid]) {
+                    start = mid+1;
+                }
             }
-            else {
-                sb.append(0).append("\n");
+            if (isMatch) {
+                sb.append(1).append('\n');
+            }
+            else{
+                sb.append(0).append('\n');
             }
         }
-        System.out.println(sb);
+        System.out.println(sb.toString());
     }
 }
