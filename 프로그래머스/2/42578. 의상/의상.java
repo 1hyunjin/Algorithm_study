@@ -1,26 +1,17 @@
 import java.util.*;
 class Solution {
     public int solution(String[][] clothes) {
-         int answer = 1;
-
-        Map<String, Integer> type = new HashMap<>();
-
-        for (int i = 0; i < clothes.length; i++) {
-            if (!type.containsKey(clothes[i][1])) {
-                type.put(clothes[i][1], 1);
-            }else {
-                type.put(clothes[i][1], type.get(clothes[i][1]) + 1);
-            }
+        int answer = 1;
+        Map<String, Integer> map = new HashMap<>();
+        for(int i = 0; i < clothes.length; i++){
+            String name = clothes[i][0];
+            String type = clothes[i][1];
+            map.put(clothes[i][1], map.getOrDefault(clothes[i][1], 0) + 1);
         }
-
-
-        for (String key : type.keySet()) {
-
-            answer *= type.get(key) + 1;
-
+        for(String type : map.keySet()){
+            answer *= map.get(type) + 1;
         }
-        answer -= 1;
-
+        answer -=1;
         return answer;
     }
 }
