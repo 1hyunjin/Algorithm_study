@@ -1,21 +1,10 @@
--- 코드를 작성해주세요
-
-
-
-
-SELECT i.ID, n.FISH_NAME, i.LENGTH
-FROM FISH_INFO i JOIN FISH_NAME_INFO n ON i.FISH_TYPE = n.FISH_TYPE
-WHERE (i.FISH_TYPE, i.LENGTH) IN (
-                                SELECT FISH_TYPE, MAX(LENGTH)
-                                FROM FISH_INFO
-                                GROUP BY FISH_TYPE)
-ORDER BY i.ID;
-
-
-# SELECT i.ID, n.FISH_NAME, i.LENGTH
-# FROM FISH_INFO i JOIN FISH_NAME_INFO n ON i.FISH_TYPE = n.FISH_TYPE
-# WHERE (i.LENGTH) IN (
-#                                 SELECT  MAX(LENGTH)
-#                                 FROM FISH_INFO
-#                                 GROUP BY FISH_TYPE)
-# ORDER BY i.ID;
+SELECT I.ID, N.FISH_NAME, I.LENGTH
+FROM FISH_INFO I JOIN FISH_NAME_INFO N ON I.FISH_TYPE = N.FISH_TYPE
+JOIN (
+    SELECT FISH_TYPE, MAX(LENGTH) AS MAX_LENGTH
+    FROM FISH_INFO
+    GROUP BY FISH_TYPE
+) M
+ON I.FISH_TYPE = M.FISH_TYPE
+AND I.LENGTH = M.MAX_LENGTH
+ORDER BY I.ID;
