@@ -1,15 +1,15 @@
 import java.util.*;
 class Solution {
     public int solution(int[] nums) {
-       Map<Integer, Integer> map = new HashMap<>();
-        for(int i = 0; i < nums.length; i++){
+        int answer = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i =0; i < nums.length; i++){
             map.put(nums[i], map.getOrDefault(nums[i], 0)+1);
         }
-        if(map.size() >= nums.length/2){
-            return nums.length/2;
+        int n = nums.length/2;
+        if(map.size() > n){
+            return n;
         }
-        else{
-            return map.size();
-        }
+        return map.size();
     }
 }
