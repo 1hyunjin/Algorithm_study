@@ -6,7 +6,6 @@ class Solution {
         for(int i = 0; i < scoville.length; i++){
             queue.offer(scoville[i]);
         }
-        boolean isHot = true;
         while(!queue.isEmpty()){
             int size = queue.size();
             if(queue.size() > 1){
@@ -21,9 +20,6 @@ class Solution {
             else{
                 if(queue.poll() >= K){
                     return answer;
-                }
-                else{
-                    isHot = false;
                 }
             }
             answer++;
